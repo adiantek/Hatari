@@ -1,6 +1,12 @@
 <h1><p align="center">Hatari</p></h1>
 First and the best Hacked Client for Forge. It is compatible with a lot of other modifications (e.g.: TooManyItems, OptiFine, NotEnaughtItems, Pixelmon).
 
+<h2>Usage</h2>
+<ul>
+	<li>Press U to open console.</li>
+	<li>Press Y to manage windows.</li>
+	<li>Press F4+H to disable/enable Hatari. It will hide all Hatari messages from chat.</li>
+</ul>
 <h2>Cheats and Features</h2>
 
 <ol>
