@@ -101,3 +101,10 @@ To get more FPS I recommend OptiFine.<br/>
 		<td><a href="https://optifine.net/changelog?f=OptiFine_1.7.10_HD_C1.jar">changelog</a></td>
 	</tr>
 </table>
+
+<h2>Screenshots</h2>
+<img src="https://raw.githubusercontent.com/adiantek/Hatari/master/screenshots/1.0/2015-07-20%2022%3A51%3A24.png" />
+<img src="https://raw.githubusercontent.com/adiantek/Hatari/master/screenshots/1.0/2015-07-20%2022%3A54%3A26.png" />
+<img src="https://raw.githubusercontent.com/adiantek/Hatari/master/screenshots/1.0/2015-07-20%2022%3A55%3A02.png" />
+<img src="https://raw.githubusercontent.com/adiantek/Hatari/master/screenshots/1.0/2015-07-20%2023%3A01%3A03.png" />
+<img src="https://raw.githubusercontent.com/adiantek/Hatari/master/screenshots/1.0/2015-07-20%2023%3A03%3A08.png" />
