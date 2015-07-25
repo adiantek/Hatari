@@ -1,11 +1,14 @@
 package ovh.adiantek.hatari.mods;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -18,7 +21,9 @@ import java.util.TreeSet;
 import javax.swing.AbstractListModel;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -27,11 +32,21 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.ListSelectionModel;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.DefaultTreeSelectionModel;
+import javax.swing.tree.TreeCellRenderer;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
+import javax.swing.tree.TreeSelectionModel;
 
 import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityEvent;
@@ -56,6 +71,8 @@ public class Friends extends Modification implements ActionListener {
 	private JTextField addCustomField;
 	private JButton addButton;
 	private JButton removeButton;
+	private HashMap<Class<?>, Boolean> entitiesAttack = getObject("entitiesAttack", null);
+	private CheckTreeManager checkTreeManager;
 	public static Friends instance;
 
 	public Friends() {
@@ -80,6 +97,9 @@ public class Friends extends Modification implements ActionListener {
 						new String[] { "username" }, true);
 		FMLCommonHandler.instance().bus().register(this);
 		addToggleCommand("friends list", "List your friends.");
+		if(entitiesAttack==null) {
+			entitiesAttack=new HashMap<Class<?>, Boolean>();
+		}
 	}
 
 	public boolean isFriend(String nickname) {
@@ -101,6 +121,19 @@ public class Friends extends Modification implements ActionListener {
 		}
 
 	}
+	public boolean isFriend(Entity entity) {
+		if(!(entity instanceof EntityLivingBase)) {
+			return true;
+		}
+		boolean attack = entitiesAttack.getOrDefault(entity.getClass(), true);
+		if(!attack)
+			return true;
+		if(entity instanceof EntityPlayer) {
+			EntityPlayer player = (EntityPlayer) entity;
+			return isFriend(player.getCommandSenderName());
+		}
+		return false;
+	}
 	public static String getName(Class<?> entity) {
 		Object codePre = EntityList.classToStringMapping.get(entity);
 		if(codePre==null)
@@ -112,22 +145,37 @@ public class Friends extends Modification implements ActionListener {
 		}
 		return translated;
 	}
-	private JScrollPane createEntitiesTree() {
-
+	private class EntityObject {
+		Class<?> entity;
+		public EntityObject(Class<?> entity) {
+			this.entity=entity;
+		}
+		public String toString(){
+			return getName(entity);
+		}
+		public boolean isSelected() {
+			return entitiesAttack.getOrDefault(entity, true);
+			
+		}
+		public void setSelected(boolean b) {
+			entitiesAttack.put(entity, b);
+		}
+	}
+	private JPanel createEntitiesTree() {
 		ArrayList<Class<?>> customs = new ArrayList<Class<?>>();
 		Map<Class<?>, String> mapa = EntityList.classToStringMapping;
 		HashMap<Class<?>, DefaultMutableTreeNode> ref = new HashMap<Class<?>, DefaultMutableTreeNode>();
 		for(Class<?> cl : mapa.keySet()) {
 			Class<?> curr = cl;
 			while(curr!=null) {
-				ref.put(curr, new DefaultMutableTreeNode(getName(curr)));
+				ref.put(curr, new DefaultMutableTreeNode(new EntityObject(curr)));
 				curr=curr.getSuperclass();
 			}
 		}
 		{
 			Class<?> curr = EntityPlayer.class;
 			while(curr!=null) {
-				ref.put(curr, new DefaultMutableTreeNode(getName(curr)));
+				ref.put(curr, new DefaultMutableTreeNode(new EntityObject(curr)));
 				curr=curr.getSuperclass();
 			}
 		}
@@ -151,7 +199,17 @@ public class Friends extends Modification implements ActionListener {
 				
 			}
 		}
-		return new JScrollPane(new JTree(ref.get(EntityLivingBase.class)));
+		JPanel tot = new JPanel(new BorderLayout());
+		JTree tree = new JTree(ref.get(EntityLivingBase.class));
+		checkTreeManager =new CheckTreeManager(tree);
+		tree.setEditable(false);
+		for (int i = 0; i < tree.getRowCount(); i++) {
+		    tree.expandRow(i);
+		}
+		JScrollPane jsp = new JScrollPane(tree);
+		tot.add(jsp, BorderLayout.CENTER);
+		tot.add(new JLabel("Select entities that you don't like."), BorderLayout.NORTH);
+		return tot;
 	}
 	private JComponent createPanelFriends() {
 		if (panel != null) {
@@ -238,12 +296,18 @@ public class Friends extends Modification implements ActionListener {
 
 	@Override
 	public void resetConfig() {
-		friends = new TreeSet<String>();
+		friends.clear();
+		players.clear();
+		if(playersList!=null)
+			playersList.change();
+		if(friendsList!=null)
+			friendsList.change();
 	}
 
 	@Override
 	protected void save() {
 		setObject("friends", friends);
+		setObject("entitiesAttack", entitiesAttack);
 	}
 
 	private void insertPlayer(String player) {
@@ -380,6 +444,66 @@ public class Friends extends Modification implements ActionListener {
 
 			}
 
+		}
+	}
+	private class CheckTreeCellRenderer extends JPanel implements
+			TreeCellRenderer {
+		static final long serialVersionUID = 0;
+		private DefaultTreeSelectionModel selectionModel;
+		private TreeCellRenderer delegate;
+		private JCheckBox checkBox = new JCheckBox();
+		private CheckTreeCellRenderer(TreeCellRenderer delegate,
+				DefaultTreeSelectionModel selectionModel) {
+			this.delegate = delegate;
+			this.selectionModel = selectionModel;
+			setLayout(new BorderLayout());
+			setOpaque(false);
+			checkBox.setOpaque(false);
+		}
+		public Component getTreeCellRendererComponent(JTree tree, Object value,
+				boolean selected, boolean expanded, boolean leaf, int row,
+				boolean hasFocus) {
+			Component renderer = delegate.getTreeCellRendererComponent(tree,
+					value, selected, expanded, leaf, row, hasFocus);
+			TreePath path = tree.getPathForRow(row);
+			if (path != null) {
+				EntityObject object = (EntityObject) ((DefaultMutableTreeNode)path.getLastPathComponent()).getUserObject();
+				checkBox.setSelected(object.isSelected());
+			}
+			removeAll();
+			add(checkBox, BorderLayout.WEST);
+			add(renderer, BorderLayout.CENTER);
+			return this;
+		}
+	}
+	private class CheckTreeManager extends MouseAdapter implements
+			TreeSelectionListener {
+		private DefaultTreeSelectionModel selectionModel;
+		private JTree tree = new JTree();
+		private int hotspot = new JCheckBox().getPreferredSize().width;
+		public CheckTreeManager(JTree tree) {
+			this.tree = tree;
+			selectionModel = new DefaultTreeSelectionModel();
+			tree.setCellRenderer(new CheckTreeCellRenderer(tree
+					.getCellRenderer(), selectionModel));
+			tree.addMouseListener(this);
+			selectionModel.addTreeSelectionListener(this);
+		}
+		public void mouseClicked(MouseEvent me) {
+			TreePath path = tree.getPathForLocation(me.getX(), me.getY());
+			if (path == null) {
+				return;
+			}
+			if (me.getX() / 1.2 > tree.getPathBounds(path).x + hotspot) {
+				return;
+			}
+			EntityObject object = (EntityObject) ((DefaultMutableTreeNode)path.getLastPathComponent()).getUserObject();
+			boolean selected = object.isSelected();
+			object.setSelected(!selected);
+			tree.treeDidChange();
+		}
+		public void valueChanged(TreeSelectionEvent e) {
+			tree.treeDidChange();
 		}
 	}
 }

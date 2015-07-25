@@ -18,6 +18,31 @@ public class Fly extends Modification {
 	private double speed = getDouble("speed", 1d);
 	private long lastSet = 0;
 
+	public Fly() {
+		super(Fly.class, Categories.MOVEMENT, "Fly");
+		addToggleCommand("fly", "Enable or disable fly");
+		addToggleCommand("fly force", "Enable or disable force fly (bypass disable fly by server)");
+		CommandManager
+				.createNewCommand()
+				.setCommand("fly set")
+				.setExecutor(this)
+				.setDescription("Set fly speed")
+				.setRequestArguments(
+						new CommandManager.CommandValidator[] {
+								new CommandManager.DoubleValidator() },
+						new String[] { "speed" }, false).register();
+		CommandManager
+				.createNewCommand()
+				.setCommand("fly set")
+				.setExecutor(this)
+				.setDescription("Set fly speed")
+				.setRequestArguments(
+						new CommandManager.CommandValidator[] {
+								new CommandManager.PercentValidator() },
+						new String[] { "speed" }, false).register();
+		FMLCommonHandler.instance().bus().register(this);
+	}
+
 	@Executor
 	public void event(String command) {
 		if(command.equals("fly"))
@@ -46,6 +71,8 @@ public class Fly extends Modification {
 
 	@Override
 	protected boolean onEnable() {
+		if(mc.thePlayer==null)
+			return true;
 		mc.thePlayer.capabilities.allowFlying = true;
 		mc.thePlayer.capabilities.setFlySpeed((float) (speed * 0.05f));
 		return true;
@@ -62,31 +89,6 @@ public class Fly extends Modification {
 		mc.thePlayer.capabilities.allowFlying = false;
 		mc.thePlayer.capabilities.setFlySpeed((float) (speed * 0.05f));
 		return true;
-	}
-
-	public Fly() {
-		super(Fly.class, Categories.MOVEMENT, "Fly");
-		addToggleCommand("fly", "Enable or disable fly");
-		addToggleCommand("fly force", "Enable or disable force fly (bypass disable fly by server)");
-		CommandManager
-				.createNewCommand()
-				.setCommand("fly set")
-				.setExecutor(this)
-				.setDescription("Set fly speed")
-				.setRequestArguments(
-						new CommandManager.CommandValidator[] {
-								new CommandManager.DoubleValidator() },
-						new String[] { "speed" }, false).register();
-		CommandManager
-				.createNewCommand()
-				.setCommand("fly set")
-				.setExecutor(this)
-				.setDescription("Set fly speed")
-				.setRequestArguments(
-						new CommandManager.CommandValidator[] {
-								new CommandManager.PercentValidator() },
-						new String[] { "speed" }, false).register();
-		FMLCommonHandler.instance().bus().register(this);
 	}
 
 	@SubscribeEvent

@@ -36,7 +36,7 @@ public class GuiConsole extends GuiScreen {
 		}
 		line.drawTextBox();
 	}
-	public void getSentHistory(int p_146402_1_) {
+	private void getSentHistory(int p_146402_1_) {
 		int j = this.sentHistoryCursor + p_146402_1_;
 		int k = sent.size();
 		if (j < 0) {

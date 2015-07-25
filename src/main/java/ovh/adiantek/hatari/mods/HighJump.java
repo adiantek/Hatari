@@ -14,6 +14,10 @@ public class HighJump extends Modification {
 		height=setDouble("height", value);
 		viewMessage("Setted height of jump to "+value);
 	}
+	@Executor
+	public void exec(String command) {
+		toggle();
+	}
 	public HighJump() {
 		super(HighJump.class, Categories.MOVEMENT, "High Jump");
 		MinecraftForge.EVENT_BUS.register(this);

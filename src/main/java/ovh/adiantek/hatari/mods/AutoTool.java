@@ -10,6 +10,10 @@ import net.minecraftforge.common.MinecraftForge;
 import ovh.adiantek.hatari.Modification;
 import ovh.adiantek.hatari.windows.Categories;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+
+
+// TODO Don't use tool, if HP < x
+// HP =inv.getCurrentItem().getMaxDamage() - inv.getCurrentItem().getItemDamageForDisplay()
 public class AutoTool extends Modification {
 	private MovingObjectPosition omo;
 	public AutoTool() {

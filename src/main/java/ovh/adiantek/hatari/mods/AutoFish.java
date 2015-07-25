@@ -72,7 +72,7 @@ public class AutoFish extends Modification implements ChangeListener {
 	@Override
 	public void resetConfig() {
 		recast=setBoolean("recast", true);
-		multirod=setBoolean("multirod", multirod);
+		multirod=setBoolean("multirod", true);
 	}
 
 	public AutoFish() {

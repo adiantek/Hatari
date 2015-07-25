@@ -5,6 +5,7 @@ import net.minecraftforge.common.MinecraftForge;
 
 import org.lwjgl.opengl.GL11;
 
+import ovh.adiantek.hatari.Hatari;
 import ovh.adiantek.hatari.Modification;
 import ovh.adiantek.hatari.windows.Categories;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -31,7 +32,7 @@ public class AntiInvisible extends Modification {
 	}
 	@SubscribeEvent
 	public void event(RenderLivingEvent.Pre p) {
-		if(!isEnabled()) {
+		if(!isEnabled() || Hatari.instance.visible) {
 			invisible=false;
 			return;
 		}

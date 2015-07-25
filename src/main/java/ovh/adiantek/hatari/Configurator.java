@@ -9,9 +9,13 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.TreeMap;
 
+import javax.swing.JOptionPane;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import ovh.adiantek.hatari.windows.ActiveMods;
+import ovh.adiantek.hatari.windows.Categories;
 import ovh.adiantek.hatari.windows.WindowHub;
 
 public class Configurator {
@@ -37,7 +41,6 @@ public class Configurator {
 			Object o = ois.readObject();
 			if(o!=null) {
 				obj = (TreeMap<String, Serializable>) o;
-				System.out.println(obj);
 			} else {
 				l.error("[H] Can't read config: ois.readObject() is null!");
 			}
@@ -49,10 +52,17 @@ public class Configurator {
 		}
 		isLoaded=true;
 		Runtime.getRuntime().addShutdownHook(new Thread("SavingSettings"){
+			{
+				setDaemon(true);
+			}
 			public void run() {
 				try {
-					WindowHub.save();
+					if(WindowHub.instance!=null)
+						WindowHub.instance.save();
+					if(ActiveMods.instance!=null)
+						ActiveMods.instance.save();
 					Modification.saveAll();
+					Categories.save();
 					FileOutputStream fos = new FileOutputStream(config);
 					ObjectOutputStream oos = new ObjectOutputStream(fos);
 					oos.writeObject(obj);
@@ -62,6 +72,8 @@ public class Configurator {
 					
 				} catch(Throwable t){
 					l.error("Cannot save config", t);
+					t.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Cannot save config:\n"+t);
 				}
 			}
 		});
@@ -98,10 +110,7 @@ public class Configurator {
 	}
 	public final boolean getBoolean(String key, boolean def) {
 		if(obj.get(className+key)==null)return setBoolean(className+key,def);
-		else {
-			System.out.println(key+" - "+obj.get(className+key));
-			return (Boolean)obj.get(className+key);
-		}
+		else return (Boolean)obj.get(className+key);
 	}
 	public final boolean setBoolean(String key, boolean value) {
 		return (Boolean) obj.put(className+key, value);

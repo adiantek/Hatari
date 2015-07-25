@@ -2,6 +2,8 @@ package ovh.adiantek.hatari;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
@@ -15,6 +17,7 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
@@ -25,7 +28,8 @@ import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.text.DefaultEditorKit;
 
-public class SettingsWindow extends JFrame implements ItemListener {
+public class SettingsWindow extends JFrame implements ItemListener,
+		ActionListener {
 	private static SettingsWindow instance;
 	private final JButton doneButton = new JButton("Done");
 	private final JButton resetallButton = new JButton("Reset all");
@@ -34,9 +38,9 @@ public class SettingsWindow extends JFrame implements ItemListener {
 		init();
 	}
 
-	public static class SettingsMod extends Modification {
+	static class SettingsMod extends Modification {
 		public SettingsMod() {
-			super(SettingsWindow.class, "Settings");
+			super(SettingsMod.class, "Settings");
 			CommandManager
 					.createNewCommand()
 					.setCommand("settings")
@@ -46,6 +50,7 @@ public class SettingsWindow extends JFrame implements ItemListener {
 							new CommandManager.CommandValidator[] {},
 							new String[] {}, false).register();
 		}
+
 		@Executor
 		public void event(String command) {
 			open(null);
@@ -104,7 +109,7 @@ public class SettingsWindow extends JFrame implements ItemListener {
 	}
 
 	public static void open(Modification tab) {
-		if(instance!=null) {
+		if (instance != null) {
 			instance.setVisible(false);
 			instance.dispose();
 		}
@@ -125,7 +130,8 @@ public class SettingsWindow extends JFrame implements ItemListener {
 					if (tab == m)
 						jtp.setSelectedIndex(jtp.getTabCount() - 1);
 				}
-			}});
+			}
+		});
 	}
 
 	private SettingsWindow() {
@@ -164,6 +170,8 @@ public class SettingsWindow extends JFrame implements ItemListener {
 		panel.add(buttonPannel, BorderLayout.SOUTH);
 		panel.add(jtp = new JTabbedPane(), BorderLayout.CENTER);
 		add(panel);
+		doneButton.addActionListener(this);
+		resetallButton.addActionListener(this);
 	}
 
 	@Override
@@ -179,5 +187,23 @@ public class SettingsWindow extends JFrame implements ItemListener {
 			e1.printStackTrace();
 		}
 
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == doneButton) {
+			setVisible(false);
+		} else if (e.getSource() == resetallButton) {
+			if (JOptionPane.showConfirmDialog(null, "Do you want reset all?",
+					"Reset all", JOptionPane.YES_NO_OPTION,
+					JOptionPane.QUESTION_MESSAGE) == 0) {
+				for(Modification md : Modification.modifications) {
+					md.resetConfig();
+				}
+				setVisible(false);
+				open(null);
+				
+			}
+		}
 	}
 }

@@ -16,9 +16,14 @@ public class Position extends Modification {
 	public Position() {
 		super(Position.class, "Position");
 		this.minecraft=Minecraft.getMinecraft();
-		gw=new GuiWindow(getInteger("posX", 100), getInteger("posY", 100), 150, 13, "Loading...");
+		gw=new GuiWindow(getInteger("posX", 100), getInteger("posY", 100), 100, 13, "Loading...");
+		gw.load(this, "pos");
 		WindowHub.addWindow("Position", gw);
 		FMLCommonHandler.instance().bus().register(this);
+	}
+	@Override
+	protected void save() {
+		gw.save(this, "pos");
 	}
 	@SubscribeEvent
 	public void onTick(TickEvent.PlayerTickEvent ot) {
@@ -30,7 +35,9 @@ public class Position extends Modification {
 				int posZ = (int) (player.posZ+0.5);
 				int i4 = MathHelper.floor_double((double)(player.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
 	            gw.setTitle("X: "+posX+" Y: "+posY+" Z: "+posZ+" | "+Direction.directions[i4]);
+	            gw.wdth=mc.fontRenderer.getStringWidth(gw.getTitle())+4;
 			}
+			
 		}
 	}
 }

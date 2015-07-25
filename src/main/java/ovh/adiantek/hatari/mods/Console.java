@@ -109,7 +109,6 @@ public class Console extends Modification implements ActionListener {
 				console.insertString(console.getLength(), getLayout()
 						.toSerializable(event).toString(), null);
 			} catch (BadLocationException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

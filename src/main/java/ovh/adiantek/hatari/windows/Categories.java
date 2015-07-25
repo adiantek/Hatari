@@ -1,5 +1,6 @@
 package ovh.adiantek.hatari.windows;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Random;
@@ -26,10 +27,11 @@ public class Categories extends GuiWindow {
 		super(
 				random.nextInt(Minecraft.getMinecraft().displayWidth/2),
 				random.nextInt(Minecraft.getMinecraft().displayHeight/2),
-				150,
+				100,
 				13,
 				title);
 		load(configurator, title);
+		this.wdth=100;
 		WindowHub.addWindow(title, this);
 	}
 	@Override
@@ -62,7 +64,14 @@ public class Categories extends GuiWindow {
     			drawRect(swX, swY, startX+wdth-2, swY+10, 0x40ffffff);
     		}
     		if(hgPos==swY) {
-    			drawHoveringText(Arrays.asList((isEnabled?"Disable":"Enabled")+" "+title+"?"), x, y, fontRendererObj);
+    			ArrayList<String> lst = new ArrayList<String>();
+    			lst.add((isEnabled?"Disable":"Enable")+" "+title+"?");
+    			String help = modifications.get(title).help;
+    			if(help!=null) {
+    				lst.add("");
+    				lst.add(help);
+    			}
+    			drawHoveringText(lst, x, y, fontRendererObj);
     			RenderHelper.disableStandardItemLighting();
     		}
         	mc.fontRenderer.drawString(title, swX, swY+1, 0xffffff, false);

@@ -8,8 +8,13 @@ import ovh.adiantek.hatari.GuiHatariGame;
 import ovh.adiantek.hatari.GuiWindow;
 
 public class WindowHub extends GuiWindow {
+	private Configurator conf;
+	public static WindowHub instance;
 	public WindowHub() {
-		super(10, 10, 150, 13, "Window Hub");
+		super(10, 10, 100, 13, "Window Hub");
+		instance=this;
+		conf=new Configurator(WindowHub.class);
+		load(conf, "hub");
 		new Position();
 	}
 	@Override
@@ -50,14 +55,18 @@ public class WindowHub extends GuiWindow {
     		swY+=10;
     	}
 	}
-	public static void save() {
-		new Configurator(WindowHub.class).setObject("visible", visible);
+	public void save() {
+		conf.setObject("visible", visible);
+		save(conf, "hub");
 	}
 	private static TreeMap<String, GuiWindow> windows = new TreeMap<String, GuiWindow>();
 	private static TreeMap<String, Boolean> visible = (TreeMap<String, Boolean>) new Configurator(WindowHub.class).getObject("visible", new TreeMap<String, Boolean>());
 	public static void addWindow(String name, GuiWindow gw) {
 		windows.put(name, gw);
-		visible.put(name, false);
+		if(visible.get(name)!=null && visible.get(name)) {
+			GuiHatariGame.addWindow(gw);
+		} else
+			visible.put(name, false);
 	}
 	public static void removeWindow(String name) {
 		if(windows.containsKey(name)) {

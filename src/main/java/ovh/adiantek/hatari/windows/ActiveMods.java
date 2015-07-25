@@ -15,14 +15,17 @@ import ovh.adiantek.hatari.Modification;
 
 public class ActiveMods extends GuiWindow {
 	private Configurator configurator;
+	public static ActiveMods instance;
 	public ActiveMods() {
 		this.setTitle("Active Mods");
-		this.setSize(150, 13);
 		configurator = new Configurator(ActiveMods.class);
-		this.setLocation(
-				configurator.getInteger("posX", (int) (System.currentTimeMillis()%Minecraft.getMinecraft().displayWidth/2)),
-				configurator.getInteger("posY", (int) (System.currentTimeMillis()%Minecraft.getMinecraft().displayHeight/2)));
+		load(configurator, "active");
+		this.setSize(100, 13);
+		instance=this;
 		WindowHub.addWindow("Active Mods", this);
+	}
+	public void save() {
+		save(configurator, "active");
 	}
 	@Override
 	public void prepareRender() {
@@ -47,7 +50,14 @@ public class ActiveMods extends GuiWindow {
 			int pos = (y-15-startY)/10;
 			hgPos=startY+pos*10+14;
 			drawRect(swX, hgPos, startX+wdth-2, hgPos+10, 0x80ffffff);
-			drawHoveringText(Arrays.asList("Disable "+enabled.get(pos)+"?"), x, y, fontRendererObj);
+			ArrayList<String> disable = new ArrayList<String>();
+			disable.add("Disable "+enabled.get(pos)+"?");
+			String help = modifications.get(enabled.get(pos)).help;
+			if(help!=null) {
+				disable.add("");
+				disable.add(help);
+			}
+			drawHoveringText(disable, x, y, fontRendererObj);
 			RenderHelper.disableStandardItemLighting();
 		}
     	for(String title : enabled) {
@@ -64,10 +74,8 @@ public class ActiveMods extends GuiWindow {
 	}
 	private static TreeMap<String, Modification> modifications = new TreeMap<String, Modification>();
 	private static ArrayList<String> enabled = new ArrayList<String>();
-	public static void addModification(String name, Modification gw) {
+	static void addModification(String name, Modification gw) {
 		modifications.put(name, gw);
 	}
-	public static Collection<Modification> getAllModifications() {
-		return modifications.values();
-	}
+	
 }

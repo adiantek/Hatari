@@ -85,9 +85,9 @@ public class GuiHatariGame extends GuiScreen {
 		gt4.x = (250 - Minecraft.getMinecraft().fontRenderer
 				.getStringWidth(gt4.text)) / 2;
 		gw.addText(gt4);
-		GuiButton gb = new GuiButton(0, 0, 14 + 24 + 12, 123, 20,
+		GuiButton gb = new GuiButton(0, 1, 14 + 24 + 12, 124, 20,
 				"Visit web page");
-		GuiButton gb2 = new GuiButton(1, 125, 14 + 24 + 12, 123, 20, "Close");
+		GuiButton gb2 = new GuiButton(1, 125, 14 + 24 + 12, 124, 20, "Close");
 		gw.addButton(gb);
 		gw.addButton(gb2);
 	}

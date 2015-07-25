@@ -9,10 +9,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.renderer.RenderHelper;
-
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
 public class GuiWindow extends GuiScreen {
 
@@ -20,15 +16,15 @@ public class GuiWindow extends GuiScreen {
 	public int startY;
 	public int wdth;
 	public int hght;
-	protected int borderColor = 0xff000000;
-	protected int backgroundTitleColor = 0x80000000;
-	protected int backgroundColor = 0x40000000;
+	private static int borderColor = 0xff000000;
+	private static int backgroundTitleColor = 0x80000000;
+	private static int backgroundColor = 0x40000000;
 	private int moveX = 0;
 	private boolean isCloseable;
 	private int moveY = 0;
 	private boolean moving = false;
 	private String title;
-	public ArrayList<GuiText> gtlist = new ArrayList<GuiText>();
+	private ArrayList<GuiText> gtlist = new ArrayList<GuiText>();
 	private GuiButton selectedButton;
 	private boolean isMinimized;
 	private boolean pinned;
@@ -61,9 +57,8 @@ public class GuiWindow extends GuiScreen {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-
-	public void setBorderColor(int color) {
-		this.borderColor = color;
+	public String getTitle() {
+		return title;
 	}
 	public boolean isCloseable() {
 		return isCloseable;
@@ -71,10 +66,6 @@ public class GuiWindow extends GuiScreen {
 
 	public void setCloseable(boolean isCloseable) {
 		this.isCloseable = isCloseable;
-	}
-
-	public void setBackgroundColor(int color) {
-		this.backgroundColor = color;
 	}
 
 	public void addButton(GuiButton gb) {
@@ -143,12 +134,12 @@ public class GuiWindow extends GuiScreen {
 		drawBorder();
 		boolean drawButtons = this.mc.currentScreen instanceof GuiHatariGame;
 		if (drawButtons) {
-			boolean focused0 = tx > wdth - 11 && tx < wdth - 2
-					&& ty < 11 && ty > 2;
-			boolean focused1 = tx > wdth - 22 && tx < wdth - 13
-					&& ty < 11 && ty > 2;
-			boolean focused2 = tx > wdth - 33 && tx < wdth - 25
-					&& ty < 11 && ty > 2;
+			boolean focused0 = tx > wdth - 11 && tx < wdth - 2 && ty < 11
+					&& ty > 2;
+			boolean focused1 = tx > wdth - 22 && tx < wdth - 13 && ty < 11
+					&& ty > 2;
+			boolean focused2 = tx > wdth - 33 && tx < wdth - 24 && ty < 11
+					&& ty > 2;
 			drawButtons(focused0, focused1, focused2, x, y);
 		}
 		this.drawString(fontRendererObj,
@@ -217,37 +208,43 @@ public class GuiWindow extends GuiScreen {
 				borderColor);
 	}
 
-	private void drawButtons(boolean focused0, boolean focused1, boolean focused2,
-			int mouseX, int mouseY) {
-		if(isCloseable) {
+	private void drawButtons(boolean focused0, boolean focused1,
+			boolean focused2, int mouseX, int mouseY) {
+		if (isCloseable) {
 			drawRect(startX + wdth - 11, startY + 2, startX + wdth - 2,
 					startY + 11, focused0 ? 0xff404040 : 0xff000000);
 			fontRendererObj.drawString("X",
-					startX + wdth - (fontRendererObj.getStringWidth("X") / 2) - 6, startY + 2, 0xffffffff, false);
+					startX + wdth - (fontRendererObj.getStringWidth("X") / 2)
+							- 6, startY + 2, 0xffffffff, false);
 
 			drawRect(startX + wdth - 22, startY + 2, startX + wdth - 2 - 11,
-					startY + 11, focused1 ? 0xff404040 : !isPinned() ? 0xff000000
-							: 0xff404040);
-			drawRect(startX + wdth - 33, startY + 2, startX + wdth - 2 - 25,
+					startY + 11, focused1 ? 0xff404040
+							: !isPinned() ? 0xff000000 : 0xff404040);
+			drawRect(startX + wdth - 33, startY + 2, startX + wdth - 24,
 					startY + 11, focused2 ? 0xff404040
 							: !isMinimized() ? 0xff000000 : 0xff404040);
 			fontRendererObj.drawString("_",
-					startX + wdth - (fontRendererObj.getStringWidth("_") / 2) - 6
-							- 11, startY + 2, 0xffffffff, false);
+					startX + wdth - (fontRendererObj.getStringWidth("_") / 2)
+							- 17 - 11, startY + 2, 0xffffffff, false);
 		} else {
 			drawRect(startX + wdth - 11, startY + 2, startX + wdth - 2,
-					startY + 11, focused0 ? 0xff404040 : !isPinned() ? 0xff000000
-							: 0xff404040);
-			drawRect(startX + wdth - 22, startY + 2, startX + wdth - 2 - 11,
+					startY + 11, focused0 ? 0xff404040
+							: !isPinned() ? 0xff000000 : 0xff404040);
+			drawRect(startX + wdth - 22, startY + 2, startX + wdth - 13,
 					startY + 11, focused1 ? 0xff404040
 							: !isMinimized() ? 0xff000000 : 0xff404040);
 			fontRendererObj.drawString("_",
-					startX + wdth - (fontRendererObj.getStringWidth("_") / 2) - 6
-							- 11, startY + 2, 0xffffffff, false);
+					startX + wdth - (fontRendererObj.getStringWidth("_") / 2)
+							- 17, startY + 2, 0xffffffff, false);
 		}
-		if(!isCloseable) {
-			focused2=focused1;
-			focused1=focused0;
+
+		if (!isCloseable) {
+			focused2 = focused1;
+			focused1 = focused0;
+		} else if (focused0) {
+			drawHoveringText(Arrays.asList("Close"), mouseX, mouseY,
+					fontRendererObj);
+
 		}
 		if (focused1) {
 			if (isPinned()) {
@@ -268,15 +265,20 @@ public class GuiWindow extends GuiScreen {
 
 		}
 	}
-	static List<Object[]> renders = Collections.synchronizedList(new ArrayList<Object[]>());
-	public void drawHoveringText(List texts, int posX,
-			int posY, FontRenderer font) {
-		renders.add(new Object[]{texts, posX, posY, font, this});
+
+	static List<Object[]> renders = Collections
+			.synchronizedList(new ArrayList<Object[]>());
+
+	public void drawHoveringText(List texts, int posX, int posY,
+			FontRenderer font) {
+		renders.add(new Object[] { texts, posX, posY, font, this });
 	}
+
 	void drawHoveringTextSuper(Object[] obj) {
-		super.drawHoveringText((List)obj[0], (Integer)obj[1], (Integer)obj[2], (FontRenderer)obj[3]);
+		super.drawHoveringText((List) obj[0], (Integer) obj[1],
+				(Integer) obj[2], (FontRenderer) obj[3]);
 	}
-	
+
 	public boolean isMinimized() {
 		return isMinimized;
 	}
@@ -285,7 +287,7 @@ public class GuiWindow extends GuiScreen {
 		this.isMinimized = minimized;
 	}
 
-	public boolean mouseClickMoveFromOtherGUI(int x, int y, int z, long howLong) {
+	boolean mouseClickMoveFromOtherGUI(int x, int y, int z, long howLong) {
 		if (!moving) {
 			int tx = x - startX;
 			int ty = y - startY;
@@ -322,7 +324,7 @@ public class GuiWindow extends GuiScreen {
 		this.height = p_146280_3_;
 	}
 
-	public boolean mouseMovedOrUpFromOtherGUI(int x, int y, int p_146286_3_) {
+	boolean mouseMovedOrUpFromOtherGUI(int x, int y, int p_146286_3_) {
 		moving = false;
 		int swX = startX + 1;
 		int swY = startY + 15;
@@ -340,18 +342,29 @@ public class GuiWindow extends GuiScreen {
 		return false;
 	}
 
-	public boolean mouseClickedFromOtherGUI(int x, int y, int par3) {
+	boolean mouseClickedFromOtherGUI(int x, int y, int par3) {
 		int swX = startX + 1;
 		int swY = startY + 15;
 
 		int tx = x - startX;
 		int ty = y - startY;
 		if (tx > wdth - 11 && tx < wdth - 2 && ty < 11 && ty > 2) {
-			setPinned(!isPinned());
+			if (isCloseable) {
+				GuiHatariGame.removeWindow(this);
+			} else
+				setPinned(!isPinned());
 			return true;
 		} else if (tx > wdth - 22 && tx < wdth - 13 && ty < 11 && ty > 2) {
-			setMinimized(!isMinimized);
+			if (isCloseable)
+				setPinned(!isPinned());
+			else
+				setMinimized(!isMinimized);
 			return true;
+		} else if (tx > wdth - 33 && tx < wdth - 24 && ty < 11 && ty > 2) {
+			if (isCloseable) {
+				setMinimized(!isMinimized);
+				return true;
+			}
 		}
 		if (x > startX && x < startX + wdth && y > startY && y < startY + hght) {
 			mouseClicked(tx - 1, ty - 15, par3);
@@ -370,6 +383,7 @@ public class GuiWindow extends GuiScreen {
 
 	public void renderContent(int x, int y, float par3) {
 	}
+
 	public void prepareRender() {
 	}
 }

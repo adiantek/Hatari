@@ -50,7 +50,7 @@ public class AutoArmor extends Modification implements ItemListener {
 	public AutoArmor() {
 		super(AutoArmor.class, Categories.COMBAT, "Auto-Armor");
 		FMLCommonHandler.instance().bus().register(this);
-		this.addToggleCommand("autoarmor", "Wear automatically armor if you don't wear.");
+		this.addToggleCommand("autoarmor", "Wear automatically armor if you don't wear");
 	}
 	@Override
 	public JComponent openConfig() {
@@ -88,6 +88,7 @@ public class AutoArmor extends Modification implements ItemListener {
 		percent=0;
 		enchants=setObject("enchants", new int[]{0,0,0,0});
 	}
+	//TODO
 	private boolean damaged(ItemStack item) {
 		int max = item.getMaxDamage();
 		int dur = max - item.getItemDamageForDisplay();
@@ -98,14 +99,14 @@ public class AutoArmor extends Modification implements ItemListener {
 		EntityClientPlayerMP player = mc.thePlayer;
 		ContainerPlayer inv = (ContainerPlayer) player.inventoryContainer;
 		ArrayList<Slot> slots = new ArrayList<Slot>();
-		for (int k = 0; k < 2; k++) {
+		for (int k = 0; k < 1; k++) {
 			slots.clear();
-			for (int j = 0; j < priority.length; j++) {
+			for (int j = priority.length-1; j >=0; j--) {
 				int find = priority[j];
-				for (int i = 9; i < 35; i++) {
+				for (int i = 9; i < inv.inventorySlots.size(); i++) {
 					Slot slot = inv.getSlot(i);
 					if (slot.getStack()!=null && Item.getIdFromItem(slot.getStack().getItem()) == priority[j]) {
-						if (k != 0 || !damaged(slot.getStack()))
+					// 	if (k != 0 || !damaged(slot.getStack()))
 							slots.add(slot);
 					}
 				}

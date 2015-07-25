@@ -1,3 +1,5 @@
 Manifest-Version: 1.0
+FMLAT: modid_at.cfg
+FMLCorePluginContainsFMLMod: ovh.adiantek.hatari.Hatari
 FMLCorePlugin: ovh.adiantek.hatari.Hatari
 Created-By: 1.7.0 (Oracle Corporation)

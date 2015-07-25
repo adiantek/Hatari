@@ -23,31 +23,14 @@ public class NoHurtShakes extends Modification {
 	public boolean onDisable() {
 		return true;
 	}
-
+	@Executor
+	public void event(String cmd) {
+		toggle();
+	}
 	@SubscribeEvent
 	public void event(TickEvent.ClientTickEvent e) {
 		if (!isEnabled() || mc.thePlayer == null)
 			return;
-
 		mc.thePlayer.hurtTime = 0;
-		if (mc.objectMouseOver != null) {
-			if (mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
-				if (mc.objectMouseOver.blockY == 248
-						&& mc.objectMouseOver.sideHit == 1) {
-					if ((mc.objectMouseOver.blockX % 2 == 0 && mc.objectMouseOver.blockZ % 2 == 0)
-							|| (mc.objectMouseOver.blockX % 2 == 1 && mc.objectMouseOver.blockZ % 2 == 1)) {
-						if(mc.thePlayer.getHeldItem()!=null && mc.thePlayer.getHeldItem().getItem()==Item.getItemById(5))
-						mc.playerController.onPlayerRightClick(mc.thePlayer,
-								mc.theWorld, mc.thePlayer.getHeldItem(),
-								mc.objectMouseOver.blockX,
-								mc.objectMouseOver.blockY,
-								mc.objectMouseOver.blockZ,
-								mc.objectMouseOver.sideHit,
-								mc.objectMouseOver.hitVec);
-						mc.thePlayer.swingItem();
-					}
-				}
-			}
-		}
 	}
 }

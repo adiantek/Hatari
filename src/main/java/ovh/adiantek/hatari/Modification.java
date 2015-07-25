@@ -24,11 +24,15 @@ public class Modification extends Configurator {
 	public static final Logger LOG = LogManager.getLogger("H");
 	private boolean isEnabled = false;
 	final String name;
+	public String help;
 	protected static Minecraft mc;
 	private static Configurator staticConf = new Configurator(Modification.class);
 	static ArrayList<Modification> modifications = new ArrayList<Modification>();
 	public Modification(Class<?> parent, String name) {
 		super(parent);
+		if(getClass()!=parent) {
+			throw new RuntimeException("Invalid class declaration in modification");
+		}
 		this.name=name;
 		
 		modifications.add(this);
@@ -54,20 +58,16 @@ public class Modification extends Configurator {
 	}
 	public void resetConfig() {}
 	protected void save() {}
-	public static void saveAll() {
+	static void saveAll() {
 		for(Modification m : modifications) {
 			try {
 				LOG.info("Saving: "+m);
 				m.save();
 				staticConf.setBoolean("isEnabled_"+m.getClass().getName(), m.isEnabled);
-				LOG.info("Saved!");
 			} catch(Throwable t) {
 				LOG.error("Error while saving "+m.name+" ("+m+")", t);
 			}
 		}
-		LOG.info("Saving windows...");
-		Categories.save();
-		LOG.info("Saved!");
 	}
 	protected boolean onEnable() {
 		return false;
@@ -75,7 +75,7 @@ public class Modification extends Configurator {
 	protected boolean onDisable() {
 		return false;
 	}
-	protected void setEnabledState(boolean isEnabled) {
+	protected final void setEnabledState(boolean isEnabled) {
 		this.isEnabled=isEnabled;
 		ActiveMods.update();
 	}
@@ -172,6 +172,8 @@ public class Modification extends Configurator {
 				.setRequestArguments(
 						new CommandManager.CommandValidator[] {}, new String[] {}, false)
 				.register();
+		if(command.split(" ", 2).length==1)
+			this.help=help;
 	}
 	public void hide(){}
 	public void show(){}

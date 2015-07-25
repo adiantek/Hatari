@@ -29,6 +29,9 @@ public class Say extends Modification {
 		if(s.length()>100) {
 			viewMessage("Warning: Chat message is limited to 100 characters.");
 		}
-		new GuiChat().func_146403_a(s);
+		GuiChat gc = new GuiChat();
+		gc.mc=mc;
+		
+		gc.func_146403_a(s);
 	}
 }
