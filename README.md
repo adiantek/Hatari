@@ -21,7 +21,9 @@ First and the best Hacked Client for Forge. It is compatible with a lot of other
 	</li>
 	<li>
 		Misc:
+		<ul>
 			<li><b>AutoLogin</b> &ndash; automatically login on server</li>
+		</ul>
 	</li>
 	<li>
 		Movement:
