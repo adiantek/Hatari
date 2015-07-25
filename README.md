@@ -21,13 +21,15 @@ First and the best Hacked Client for Forge. It is compatible with a lot of other
 	</li>
 	<li>
 		Misc:
+			<li><b>AutoLogin</b> &ndash; automatically login on server</li>
 	</li>
 	<li>
 		Movement:
 		<ul>
 			<li><b>Auto-Walk</b> &ndash; go forward without pressing keys,</li>
 			<li><b>Fly</b> &ndash; enable or disable fly,</li>
-			<li><b>High Jump</b> &ndash; enable or disable High Jump.</li>
+			<li><b>High Jump</b> &ndash; enable or disable High Jump,</li>
+			<li><b>Sprint</b> &ndash; toggle sprint if walking.</li>
 		</ul>
 	</li>
 	<li>
@@ -35,16 +37,19 @@ First and the best Hacked Client for Forge. It is compatible with a lot of other
 		<ul>
 			<li><b>Auto-Fish</b> &ndash; enable or disable Auto-Fish,</li>
 			<li><b>Auto-Respawn</b> &ndash; automatically respawns when you die,</li>
+			<li><b>Auto-Switch</b> &ndash; constantly switch selected hotbar slot,</li>
 			<li><b>Auto-Tool</b> &ndash; select best tool to break block,</li>
+			<li><b>Flip</b> &ndash; spin 180°,</li>
 			<li><b>SelfKick</b> &ndash; disconnect from server while PvP.</li>
 		</ul>
 	</li>
 	<li>
 		Render:
 		<ul>
-			<li><b>NoHurtShakes</b> &ndash; disable visual appearance of red tint after attack,</li>
 			<li><b>Auto-Respawn</b> &ndash; automatically respawns when you die,</li>
-			<li><b>Auto-Tool</b> &ndash; select best tool to break block.</li>
+			<li><b>Auto-Tool</b> &ndash; select best tool to break block,</li>
+			<li><b>Fullbright</b> &ndash; allow for clear as day nights, fully lit caves,</li>
+			<li><b>NoHurtShakes</b> &ndash; disable visual appearance of red tint after attack.</li>
 		</ul>
 	</li>
 	<li>
@@ -61,6 +66,7 @@ First and the best Hacked Client for Forge. It is compatible with a lot of other
 			<li><b>Change username</b> &ndash; change username, player ID or token in Multiplayer menu,</li>
 			<li><b>Console</b> &ndash; view logs or send command from console window,</li>
 			<li><b>Friends</b> &ndash; add or delete something from friends,</li>
+			<li><b>HideMods</b> &ndash; modify message <i>Client attempting to join with %s mods: ...</i> in console server,</li>
 			<li><b>InvSee</b> &ndash; view EQ, potion effects about player near you,</li>
 			<li><b>Say</b> &ndash; say message to server.</li>
 		</ul>
