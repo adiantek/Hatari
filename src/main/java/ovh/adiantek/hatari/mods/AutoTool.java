@@ -19,7 +19,7 @@ public class AutoTool extends Modification {
 	public AutoTool() {
 		super(AutoTool.class, Categories.PLAYER, "Auto-Tool");
 		MinecraftForge.EVENT_BUS.register(this);
-		addToggleCommand("autotool", "Select best tool to break block");
+		addToggleCommand("autotool", "Automatically selects the best tool for the job");
 	}
 	protected boolean onEnable() {
 		return true;
