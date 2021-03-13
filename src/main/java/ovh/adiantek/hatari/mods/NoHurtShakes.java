@@ -13,7 +13,7 @@ public class NoHurtShakes extends Modification {
 		super(NoHurtShakes.class, Categories.RENDER, "NoHurtShakes");
 		FMLCommonHandler.instance().bus().register(this);
 		addToggleCommand("nohurtshakes",
-				"Disable visual appearance of red tint after attack");
+				"Removes the hurtcam effect");
 	}
 
 	public boolean onEnable() {
