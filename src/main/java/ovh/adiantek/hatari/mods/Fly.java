@@ -21,7 +21,7 @@ public class Fly extends Modification {
 	public Fly() {
 		super(Fly.class, Categories.MOVEMENT, "Fly");
 		addToggleCommand("fly", "Enable or disable fly");
-		addToggleCommand("fly force", "Enable or disable force fly (bypass disable fly by server)");
+		addToggleCommand("fly force", "Force flying on servers (can prevent being kicked for flying)");
 		CommandManager
 				.createNewCommand()
 				.setCommand("fly set")
