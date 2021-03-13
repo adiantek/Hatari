@@ -129,7 +129,7 @@ public class AutoSign extends Modification implements DocumentListener {
 	public AutoSign() {
 		super(AutoSign.class, Categories.WORLD, "Auto-Sgin");
 		MinecraftForge.EVENT_BUS.register(this);
-		this.addToggleCommand("autosign", "Create fast sign");
+		this.addToggleCommand("autosign", "Fills in a sign for you");
 	}
 
 	@Override
@@ -161,7 +161,7 @@ public class AutoSign extends Modification implements DocumentListener {
 	public void event(GuiScreenEvent.ActionPerformedEvent.Post bt) {
 		if (bt.button.id == buttonId) {
 			lines = setObject("lines", gui.tileSign.signText.clone());
-			viewMessage("Auto-Sign setted!");
+			viewMessage("Sign content set");
 		}
 	}
 
