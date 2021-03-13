@@ -42,14 +42,14 @@ public class AutoLogin extends Modification {
 
 	public AutoLogin() {
 		super(AutoLogin.class, Categories.MISC, "Auto-Login");
-		addToggleCommand("autologin", "Automatically login on server");
+		addToggleCommand("autologin", "Automatically login on cracked servers);
 		addToggleCommand("autologin generate",
 				"Generate random password and copy to clipboard");
 		CommandManager
 				.createNewCommand()
 				.setCommand("autologin generate")
 				.setDescription(
-						"Generate random password and copy it to clipboard")
+						"Generate a random password and copy it to clipboard")
 				.setExecutor(this)
 				.setRequestArguments(
 						new CommandManager.CommandValidator[] { new CommandManager.IntegerValidator() },
