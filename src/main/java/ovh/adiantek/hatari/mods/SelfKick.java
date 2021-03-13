@@ -16,7 +16,7 @@ public class SelfKick extends Modification {
 	//private Packet bugPacket = new C03PacketPlayer.C04PacketPlayerPosition(Double.NaN, Double.NaN, Double.NaN, Double.NaN, true);
 	public SelfKick() {
 		super(SelfKick.class, Categories.PLAYER, "SelfKick");
-		addToggleCommand("selfkick", "Disconnect from server while PvP");
+		addToggleCommand("selfkick", "Disconnect from server while combat logged");
 	}
 	@Executor
 	public void event(String cmd) {

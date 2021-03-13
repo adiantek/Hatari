@@ -65,17 +65,17 @@ public class GuiHatariGame extends GuiScreen {
 		};
 		gw.setPinned(true);
 		addWindow(gw);
-		GuiText gt = new GuiText(0, 0, "Welcome in Hatari 1.7.10 by barwnikk!",
+		GuiText gt = new GuiText(0, 0, "Welcome to Hatari v1.1 by barwnikk!",
 				0xffffffff, false);
 		gt.x = (250 - Minecraft.getMinecraft().fontRenderer
 				.getStringWidth(gt.text)) / 2;
 		gw.addText(gt);
-		GuiText gt2 = new GuiText(0, 14, "Press U to open console.",
+		GuiText gt2 = new GuiText(0, 14, "Press U to open the console.",
 				0xffffffff, false);
 		gt2.x = (250 - Minecraft.getMinecraft().fontRenderer
 				.getStringWidth(gt2.text)) / 2;
 		gw.addText(gt2);
-		GuiText gt3 = new GuiText(0, 14 + 12, "Press Y to manage windows.",
+		GuiText gt3 = new GuiText(0, 14 + 12, "Press Y to open the GUI",
 				0xffffffff, false);
 		gt3.x = (250 - Minecraft.getMinecraft().fontRenderer
 				.getStringWidth(gt3.text)) / 2;

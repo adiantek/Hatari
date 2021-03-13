@@ -15,7 +15,7 @@ public class AntiInvisible extends Modification {
 	public AntiInvisible() {
 		super(AntiInvisible.class, Categories.RENDER, "AntiInvisible");
 		MinecraftForge.EVENT_BUS.register(this);
-		addToggleCommand("antiinvisible", "Show entities with invisible effect");
+		addToggleCommand("antiinvisible", "Shows invisible entities");
 	}
 	private boolean invisible;
 	@Executor

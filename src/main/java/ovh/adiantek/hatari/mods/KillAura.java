@@ -22,7 +22,7 @@ public class KillAura extends Modification {
 
 	public KillAura() {
 		super(KillAura.class, Categories.COMBAT, "KillAura");
-		addToggleCommand("killaura", "Automatycally kills mobs or players");
+		addToggleCommand("killaura", "Automatically attacks entities in a set range");
 		addToggleCommand("killaura autoattack",
 				"Enable or disable attacking entities.");
 		addToggleCommand("killaura autoattack onlyvisible",
@@ -70,9 +70,9 @@ public class KillAura extends Modification {
 		} else if (cmd.equals("killaura autoattack onlyvisible")) {
 			vis = setBoolean("vis", !vis);
 			if (vis) {
-				viewMessage("Enabled attacking visible entities (you will not attack invisible)!");
+				viewMessage("Enabled visible only");
 			} else {
-				viewMessage("Disabled attacking only visible entities (you will attack all entities)!");
+				viewMessage("Disabled visible only");
 			}
 
 		}

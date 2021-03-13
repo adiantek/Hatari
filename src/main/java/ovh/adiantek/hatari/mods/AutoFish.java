@@ -79,8 +79,8 @@ public class AutoFish extends Modification implements ChangeListener {
 		super(AutoFish.class, Categories.PLAYER, "Auto-Fish");
 		MinecraftForge.EVENT_BUS.register(this);
 		addToggleCommand("autofish", "Enable or disable Auto-Fish");
-		addToggleCommand("autofish multirod", "Use multirod");
-		addToggleCommand("autofish recast", "Enable or disable recast fishing rod");
+		addToggleCommand("autofish multirod", "Enable or disable multirod");
+		addToggleCommand("autofish recast", "Enable or disable auto recast");
 		instance = this;
 	}
 
@@ -184,9 +184,9 @@ public class AutoFish extends Modification implements ChangeListener {
 		if (command.equals("autofish recast")) {
 			recast = setBoolean("recast", !recast);
 			if (recast) {
-				viewMessage("Enabled recasting rod.");
+				viewMessage("Enabled recasting.");
 			} else {
-				viewMessage("Disabled recasting rod.");
+				viewMessage("Disabled recasting.");
 			}
 		}
 		if (command.equals("autofish multirod")) {

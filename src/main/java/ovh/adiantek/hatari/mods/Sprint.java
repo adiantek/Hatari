@@ -10,7 +10,7 @@ public class Sprint extends Modification {
 	public Sprint() {
 		super(Sprint.class, Categories.MOVEMENT, "Sprint");
 		FMLCommonHandler.instance().bus().register(this);
-		addToggleCommand("sprint", "Toggle sprint when walking");
+		addToggleCommand("sprint", "Sprints automatically");
 	}
 	@Executor
 	public void event(String cmd) {
