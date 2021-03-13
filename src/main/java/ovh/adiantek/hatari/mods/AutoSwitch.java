@@ -11,7 +11,7 @@ public class AutoSwitch extends Modification {
 	public AutoSwitch() {
 		super(AutoSwitch.class, Categories.PLAYER, "Auto-Switch");
 		FMLCommonHandler.instance().bus().register(this);
-		addToggleCommand("autoswitch", "Constantly switch selected hotbar slot");
+		addToggleCommand("autoswitch", "Cycles your hotbar slots");
 	}
 	@Executor
 	public void exec(String cmd) {
