@@ -50,7 +50,7 @@ public class AutoArmor extends Modification implements ItemListener {
 	public AutoArmor() {
 		super(AutoArmor.class, Categories.COMBAT, "Auto-Armor");
 		FMLCommonHandler.instance().bus().register(this);
-		this.addToggleCommand("autoarmor", "Wear automatically armor if you don't wear");
+		this.addToggleCommand("autoarmor", "Automatically equips the best armor in your inventory.);
 	}
 	@Override
 	public JComponent openConfig() {
