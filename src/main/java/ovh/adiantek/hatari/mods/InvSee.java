@@ -35,7 +35,7 @@ public class InvSee extends Modification {
 				.setCommand("Invsee")
 				.setExecutor(this)
 				.setDescription(
-						"View EQ, potion effects about player near you.")
+						"See armor and potion effects of other players")
 				.setRequestArguments(
 						new CommandManager.CommandValidator[] { new CommandManager.EntityPlayerValidator() },
 						new String[] { "player" }, false).register();
@@ -44,7 +44,7 @@ public class InvSee extends Modification {
 				.setCommand("invsee")
 				.setExecutor(this)
 				.setDescription(
-						"View EQ, potion effects about player near you.")
+						"See armor and potion effects of other players")
 				.setRequestArguments(
 						new CommandManager.CommandValidator[] {},
 						new String[] {}, false).register();
