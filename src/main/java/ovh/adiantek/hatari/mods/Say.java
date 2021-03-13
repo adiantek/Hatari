@@ -10,7 +10,7 @@ public class Say extends Modification {
 		CommandManager
 				.createNewCommand()
 				.setCommand("say")
-				.setDescription("Say message to server")
+				.setDescription("Use this to say something without tripping the command interpreter.")
 				.setExecutor(this)
 				.setRequestArguments(
 						new CommandManager.CommandValidator[] { new CommandManager.StringValidator() },
