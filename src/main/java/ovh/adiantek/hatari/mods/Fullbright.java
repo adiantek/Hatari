@@ -13,7 +13,7 @@ public class Fullbright extends Modification {
 	public Fullbright() {
 		super(Fullbright.class, Categories.RENDER, "Fullbright");
 		FMLCommonHandler.instance().bus().register(this);
-		addToggleCommand("fullbright", "Allow for clear as day nights, fully lit caves.");
+		addToggleCommand("fullbright", "Cranks the gamma to make it easier to see");
 	}
 	public boolean onEnable() {
 		old=mc.gameSettings.gammaSetting;
