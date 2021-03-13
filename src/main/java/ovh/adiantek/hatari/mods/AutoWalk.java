@@ -15,7 +15,7 @@ public class AutoWalk extends Modification {
 	public AutoWalk() {
 		super(AutoWalk.class, Categories.MOVEMENT, "Auto-Walk");
 		FMLCommonHandler.instance().bus().register(this);
-		addToggleCommand("autowalk", "Go forward without pressing keys");
+		addToggleCommand("autowalk", "Walks for you");
 	}
 	@Override
 	protected boolean onEnable() {
